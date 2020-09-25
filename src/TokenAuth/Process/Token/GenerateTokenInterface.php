@@ -1,4 +1,5 @@
 <?php
+
 namespace TokenAuth\Process\Token;
 
 use TokenAuth\Process\Request\GenerateTokenRequest;

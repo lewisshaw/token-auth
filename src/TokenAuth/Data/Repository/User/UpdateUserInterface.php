@@ -1,4 +1,5 @@
 <?php
+
 namespace TokenAuth\Data\Repository\User;
 
 use TokenAuth\Data\Entity\User;

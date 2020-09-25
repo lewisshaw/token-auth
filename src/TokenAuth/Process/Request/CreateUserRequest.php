@@ -1,4 +1,5 @@
 <?php
+
 namespace TokenAuth\Process\Request;
 
 class CreateUserRequest

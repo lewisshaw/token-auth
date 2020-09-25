@@ -1,4 +1,5 @@
 <?php
+
 namespace TokenAuth\Process\User;
 
 use TokenAuth\Data\Repository\RefreshToken\DeleteRefreshTokenInterface;

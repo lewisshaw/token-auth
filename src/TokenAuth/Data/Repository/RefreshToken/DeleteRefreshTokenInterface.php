@@ -1,4 +1,5 @@
 <?php
+
 namespace TokenAuth\Data\Repository\RefreshToken;
 
 interface DeleteRefreshTokenInterface

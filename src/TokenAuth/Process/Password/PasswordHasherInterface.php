@@ -1,4 +1,5 @@
 <?php
+
 namespace TokenAuth\Process\Password;
 
 interface PasswordHasherInterface

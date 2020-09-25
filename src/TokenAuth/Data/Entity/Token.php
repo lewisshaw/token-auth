@@ -1,4 +1,5 @@
 <?php
+
 namespace TokenAuth\Data\Entity;
 
 use DateTimeInterface;
