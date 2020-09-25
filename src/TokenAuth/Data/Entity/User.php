@@ -2,6 +2,8 @@
 
 namespace TokenAuth\Data\Entity;
 
+use LogicException;
+
 class User
 {
     private $userId;
@@ -22,7 +24,7 @@ class User
     public function setUserId(int $userId)
     {
         if (null !== $this->userId) {
-            throw new \LogicException('Cannot set ID when ID already set');
+            throw new LogicException('Cannot set ID when ID already set');
         }
         $this->userId = $userId;
     }
@@ -30,7 +32,7 @@ class User
     public function getUserId()
     {
         if (null === $this->userId) {
-            throw new \LogicException('Cannot get user ID when it is not set');
+            throw new LogicException('Cannot get user ID when it is not set');
         }
         return $this->userId;
     }

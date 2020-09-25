@@ -22,5 +22,11 @@
         "psr-4": {
             "TokenAuthTest\\": "test/TokenAuth"
         }
+    },
+    "scripts": {
+        "build": ["@phpcs", "@phpmd", "@test"],
+        "test": "phpunit",
+        "phpmd": "phpmd src/ text cleancode,codesize,design,naming,unusedcode",
+        "phpcs": "phpcs --standard=PSR12 src/"
     }
 }
