@@ -12,10 +12,10 @@ use TokenAuth\Process\Token\TokenValidatorInterface;
 
 class UpdateUserToken
 {
-    private $refreshTokenRepo;
-    private $tokenGenerator;
-    private $userRepo;
-    private $tokenValidator;
+    private GetRefreshTokenInterface $refreshTokenRepo;
+    private GenerateTokenInterface $tokenGenerator;
+    private GetUserInterface $userRepo;
+    private TokenValidatorInterface $tokenValidator;
 
     public function __construct(
         GetRefreshTokenInterface $refreshTokenRepo,

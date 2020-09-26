@@ -6,8 +6,8 @@ use DateTimeInterface;
 
 class Token
 {
-    private $token;
-    private $expiryDate;
+    private string $token;
+    private DateTimeInterface $expiryDate;
 
     public function __construct(string $token, DateTimeInterface $expiryDate)
     {
@@ -15,12 +15,12 @@ class Token
         $this->expiryDate = $expiryDate;
     }
 
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    public function getExpiryDate()
+    public function getExpiryDate(): DateTimeInterface
     {
         return $this->expiryDate;
     }

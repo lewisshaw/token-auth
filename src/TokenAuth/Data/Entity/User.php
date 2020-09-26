@@ -6,22 +6,22 @@ use LogicException;
 
 class User
 {
-    private $userId;
-    private $emailAddress;
-    private $password;
-    private $name;
+    private ?int $userId = null;
+    private string $emailAddress;
+    private string $password;
+    private string $name;
 
     public function __construct(
-        $emailAddress,
-        $password,
-        $name
+        string $emailAddress,
+        string $password,
+        string $name
     ) {
         $this->emailAddress = $emailAddress;
         $this->password = $password;
         $this->name = $name;
     }
 
-    public function setUserId(int $userId)
+    public function setUserId(int $userId): void
     {
         if (null !== $this->userId) {
             throw new LogicException('Cannot set ID when ID already set');
@@ -29,7 +29,7 @@ class User
         $this->userId = $userId;
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         if (null === $this->userId) {
             throw new LogicException('Cannot get user ID when it is not set');
@@ -37,17 +37,17 @@ class User
         return $this->userId;
     }
 
-    public function getEmailAddress()
+    public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -10,8 +10,8 @@ use TokenAuth\Process\Response\CreateUserResponse;
 
 class CreateUser
 {
-    private $createUserRepo;
-    private $passwordHasher;
+    private CreateUserInterface $createUserRepo;
+    private PasswordHasherInterface $passwordHasher;
 
     public function __construct(
         CreateUserInterface $createUserRepo,

@@ -6,14 +6,14 @@ use TokenAuth\Data\Repository\RefreshToken\DeleteRefreshTokenInterface;
 
 class LogoutUser
 {
-    private $tokenRepo;
+    private DeleteRefreshTokenInterface $tokenRepo;
 
     public function __construct(DeleteRefreshTokenInterface $tokenRepo)
     {
         $this->tokenRepo = $tokenRepo;
     }
 
-    public function logout(int $userId)
+    public function logout(int $userId): void
     {
         $this->tokenRepo->delete($userId);
     }

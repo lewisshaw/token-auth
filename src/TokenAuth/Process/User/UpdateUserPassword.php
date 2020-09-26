@@ -9,8 +9,8 @@ use TokenAuth\Process\Response\UpdateUserPasswordResponse;
 
 class UpdateUserPassword
 {
-    private $userRepo;
-    private $passwordHasher;
+    private UserInterface $userRepo;
+    private PasswordHasherInterface $passwordHasher;
 
     public function __construct(
         UserInterface $userRepo,

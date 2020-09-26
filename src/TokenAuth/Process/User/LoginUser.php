@@ -11,9 +11,9 @@ use TokenAuth\Process\Token\GenerateTokenInterface;
 
 class LoginUser
 {
-    private $tokenGenerator;
-    private $userRepo;
-    private $passwordHasher;
+    private GenerateTokenInterface $tokenGenerator;
+    private GetUserInterface $userRepo;
+    private PasswordHasherInterface $passwordHasher;
 
     public function __construct(
         GenerateTokenInterface $tokenGenerator,

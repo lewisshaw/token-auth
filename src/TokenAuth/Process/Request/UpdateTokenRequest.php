@@ -4,14 +4,14 @@ namespace TokenAuth\Process\Request;
 
 class UpdateTokenRequest
 {
-    private $userId;
+    private int $userId;
 
     public function __construct(int $userId)
     {
         $this->userId = $userId;
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }

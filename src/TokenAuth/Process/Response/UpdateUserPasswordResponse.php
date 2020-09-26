@@ -4,8 +4,8 @@ namespace TokenAuth\Process\Response;
 
 class UpdateUserPasswordResponse
 {
-    private $oldPasswordMatch;
-    private $updated;
+    private bool $oldPasswordMatch;
+    private bool $updated;
 
     public function __construct(bool $oldPasswordMatch, bool $updated)
     {
@@ -13,12 +13,12 @@ class UpdateUserPasswordResponse
         $this->updated = $updated;
     }
 
-    public function getOldPasswordMatch()
+    public function getOldPasswordMatch(): bool
     {
         return $this->oldPasswordMatch;
     }
 
-    public function getUpdated()
+    public function getUpdated(): bool
     {
         return $this->updated;
     }

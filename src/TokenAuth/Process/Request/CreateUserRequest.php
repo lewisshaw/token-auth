@@ -4,31 +4,31 @@ namespace TokenAuth\Process\Request;
 
 class CreateUserRequest
 {
-    private $emailAddress;
-    private $rawPassword;
-    private $name;
+    private string $emailAddress;
+    private string $rawPassword;
+    private string $name;
 
     public function __construct(
-        $emailAddress,
-        $rawPassword,
-        $name
+        string $emailAddress,
+        string $rawPassword,
+        string $name
     ) {
         $this->emailAddress = $emailAddress;
         $this->rawPassword = $rawPassword;
         $this->name = $name;
     }
 
-    public function getEmailAddress()
+    public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }
 
-    public function getRawPassword()
+    public function getRawPassword(): string
     {
         return $this->rawPassword;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -4,5 +4,5 @@ namespace TokenAuth\Data\Repository\RefreshToken;
 
 interface DeleteRefreshTokenInterface
 {
-    public function delete(int $userId);
+    public function delete(int $userId): void;
 }

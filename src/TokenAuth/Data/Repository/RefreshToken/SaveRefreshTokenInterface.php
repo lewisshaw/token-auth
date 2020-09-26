@@ -7,5 +7,5 @@ use TokenAuth\Data\Entity\User;
 
 interface SaveRefreshTokenInterface
 {
-    public function saveRefreshToken(User $user, Token $token);
+    public function saveRefreshToken(User $user, Token $token): void;
 }

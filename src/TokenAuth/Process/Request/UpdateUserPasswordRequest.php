@@ -4,9 +4,9 @@ namespace TokenAuth\Process\Request;
 
 class UpdateUserPasswordRequest
 {
-    private $oldRawPassword;
-    private $newRawPassword;
-    private $userId;
+    private string $oldRawPassword;
+    private string $newRawPassword;
+    private int $userId;
 
     public function __construct(
         int $userId,
@@ -18,17 +18,17 @@ class UpdateUserPasswordRequest
         $this->userId = $userId;
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
 
-    public function getOldRawPassword()
+    public function getOldRawPassword(): string
     {
         return $this->oldRawPassword;
     }
 
-    public function getNewRawPassword()
+    public function getNewRawPassword(): string
     {
         return $this->newRawPassword;
     }

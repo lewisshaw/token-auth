@@ -6,5 +6,5 @@ use TokenAuth\Data\Entity\User;
 
 interface UpdateUserInterface
 {
-    public function updatePassword(User $user, string $password);
+    public function updatePassword(User $user, string $password): void;
 }

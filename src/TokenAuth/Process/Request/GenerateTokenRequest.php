@@ -4,21 +4,21 @@ namespace TokenAuth\Process\Request;
 
 class GenerateTokenRequest
 {
-    private $email;
-    private $extraTokenData;
+    private string $email;
+    private array $extraTokenData;
 
-    public function __construct($email, $extraTokenData)
+    public function __construct(string $email, array $extraTokenData)
     {
         $this->email = $email;
         $this->extraTokenData = $extraTokenData;
     }
 
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function getExtraTokenData()
+    public function getExtraTokenData(): array
     {
         return $this->extraTokenData;
     }
