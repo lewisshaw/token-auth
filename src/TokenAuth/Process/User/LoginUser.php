@@ -3,7 +3,7 @@
 namespace TokenAuth\Process\User;
 
 use TokenAuth\Data\Repository\User\GetUserInterface;
-use TokenAuth\Process\Password\PasswordHasherInterface;
+use TokenAuth\Process\Password\PasswordVerifierInterface;
 use TokenAuth\Process\Request\GenerateTokenRequest;
 use TokenAuth\Process\Request\LoginUserRequest;
 use TokenAuth\Process\Response\LoginUserResponse;
@@ -13,16 +13,16 @@ class LoginUser
 {
     private GenerateTokenInterface $tokenGenerator;
     private GetUserInterface $userRepo;
-    private PasswordHasherInterface $passwordHasher;
+    private PasswordVerifierInterface $passwordVerifier;
 
     public function __construct(
         GenerateTokenInterface $tokenGenerator,
         GetUserInterface $userRepo,
-        PasswordHasherInterface $passwordHasher
+        PasswordVerifierInterface $passwordVerifier
     ) {
         $this->tokenGenerator = $tokenGenerator;
         $this->userRepo = $userRepo;
-        $this->passwordHasher = $passwordHasher;
+        $this->passwordVerifier = $passwordVerifier;
     }
 
     public function login(LoginUserRequest $request): LoginUserResponse
@@ -32,8 +32,11 @@ class LoginUser
             return new LoginUserResponse(false);
         }
 
-        $hashedPassword = $this->passwordHasher->hash($request->getRawPassword());
-        if ($hashedPassword !== $user->getPassword()) {
+        $passwordCorrect = $this->passwordVerifier->isPasswordCorrect(
+            $request->getRawPassword(),
+            $user->getPassword()
+        );
+        if (!$passwordCorrect) {
             return new LoginUserResponse(false);
         }
 

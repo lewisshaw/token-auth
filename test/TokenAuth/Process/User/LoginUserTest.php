@@ -10,23 +10,24 @@ use TokenAuth\Process\Response\GenerateTokenResponse;
 use TokenAuth\Process\Token\GenerateTokenInterface;
 use TokenAuth\Process\User\LoginUser;
 use PHPUnit\Framework\TestCase;
+use TokenAuth\Process\Password\PasswordVerifierInterface;
 
 class LoginUserTest extends TestCase
 {
     private $getUserRepo;
     private $tokenGenerator;
-    private $passwordHasher;
+    private $passwordVerifier;
     private $process;
 
     protected function setUp(): void
     {
         $this->getUserRepo = $this->createMock(GetUserInterface::class);
         $this->tokenGenerator = $this->createMock(GenerateTokenInterface::class);
-        $this->passwordHasher = $this->createMock(PasswordHasherInterface::class);
+        $this->passwordVerifier = $this->createMock(PasswordVerifierInterface::class);
         $this->process = new LoginUser(
             $this->tokenGenerator,
             $this->getUserRepo,
-            $this->passwordHasher
+            $this->passwordVerifier
         );
     }
 
@@ -42,7 +43,7 @@ class LoginUserTest extends TestCase
     {
         $user = new User('test@test.com', '321', 'Test Name');
         $this->getUserRepo->method('getUserByEmail')->willReturn($user);
-        $this->passwordHasher->method('hash')->willReturn('543');
+        $this->passwordVerifier->method('isPasswordCorrect')->willReturn(false);
         $loginRequest = new LoginUserRequest('test@test.com', '123');
         $obj_response = $this->process->login($loginRequest);
         $this->assertEquals(false, $obj_response->isLoginValid());
@@ -52,7 +53,7 @@ class LoginUserTest extends TestCase
     {
         $user = new User('test@test.com', '321', 'Test Name');
         $this->getUserRepo->method('getUserByEmail')->willReturn($user);
-        $this->passwordHasher->method('hash')->willReturn('321');
+        $this->passwordVerifier->method('isPasswordCorrect')->willReturn(true);
         $tokenResponse = new GenerateTokenResponse('hg54', new \DateTime());
         $this->tokenGenerator->method('getToken')->willReturn($tokenResponse);
         $loginRequest = new LoginUserRequest('test@test.com', '432');
