@@ -6,12 +6,20 @@ use TokenAuth\Data\Entity\User;
 
 class CreateUserResponse
 {
-    private User $user;
+    private ?User $user = null;
+    private bool $isEmailTaken;
 
-    public function __construct(User $user)
+    public function __construct(bool $emailTaken, ?User $user = null)
     {
         $this->user = $user;
+        $this->isEmailTaken = $emailTaken;
     }
+
+    public function isEmailTaken()
+    {
+        return $this->isEmailTaken;
+    }
+
     public function getUserId(): int
     {
         return $this->user->getUserId();

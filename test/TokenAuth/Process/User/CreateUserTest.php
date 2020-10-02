@@ -8,20 +8,24 @@ use TokenAuth\Process\Request\CreateUserRequest;
 use TokenAuth\Process\Response\CreateUserResponse;
 use TokenAuth\Process\User\CreateUser;
 use PHPUnit\Framework\TestCase;
+use TokenAuth\Data\Repository\User\GetUserInterface;
 
 class CreateUserTest extends TestCase
 {
     private $createUserRepo;
     private $passwordHasher;
+    private $getUserRepo;
     private $createUserProcess;
 
     protected function setUp(): void
     {
         $this->createUserRepo = $this->createMock(CreateUserInterface::class);
         $this->passwordHasher = $this->createMock(PasswordHasherInterface::class);
+        $this->getUserRepo = $this->createMock(GetUserInterface::class);
         $this->createUserProcess = new CreateUser(
             $this->createUserRepo,
-            $this->passwordHasher
+            $this->passwordHasher,
+            $this->getUserRepo
         );
     }
 
