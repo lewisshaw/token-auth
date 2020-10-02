@@ -36,7 +36,7 @@ class UpdateUserTokenTest extends TestCase
     public function testReturnsExpectedResponseIfRefreshTokenNotFound()
     {
         $this->refreshTokenRepo->method('getRefreshTokenForUser')->willreturn(null);
-        $updateTokenRequest = new UpdateTokenRequest(1);
+        $updateTokenRequest = new UpdateTokenRequest(1, '123');
         $result = $this->process->updateToken($updateTokenRequest);
         $this->assertEquals(false, $result->getTokenFound());
         $this->assertEquals(false, $result->getTokenExpired());
@@ -48,10 +48,23 @@ class UpdateUserTokenTest extends TestCase
         $token = new Token('123', new \DateTime());
         $this->refreshTokenRepo->method('getRefreshTokenForUser')->willreturn($token);
         $this->tokenValidator->method('isValidToken')->willReturn(false);
-        $updateTokenRequest = new UpdateTokenRequest(1);
+        $updateTokenRequest = new UpdateTokenRequest(1, '123');
         $result = $this->process->updateToken($updateTokenRequest);
         $this->assertEquals(true, $result->getTokenFound());
         $this->assertEquals(true, $result->getTokenExpired());
+        $this->assertEquals(false, $result->getUpdated());
+    }
+
+    public function testReturnsExpectedResultIfTokenIncorrect()
+    {
+        $token = new Token('123', new \DateTime());
+        $this->refreshTokenRepo->method('getRefreshTokenForUser')->willreturn($token);
+        $this->tokenValidator->method('isValidToken')->willReturn(true);
+        $updateTokenRequest = new UpdateTokenRequest(1, '321');
+        $result = $this->process->updateToken($updateTokenRequest);
+        $this->assertEquals(true, $result->getTokenFound());
+        $this->assertEquals(false, $result->getTokenExpired());
+        $this->assertEquals(true, $result->getTokenIncorrect());
         $this->assertEquals(false, $result->getUpdated());
     }
 
@@ -60,13 +73,14 @@ class UpdateUserTokenTest extends TestCase
         $token = new Token('123', new \DateTime());
         $this->refreshTokenRepo->method('getRefreshTokenForUser')->willreturn($token);
         $this->tokenValidator->method('isValidToken')->willReturn(true);
-        $updateTokenRequest = new UpdateTokenRequest(1);
+        $updateTokenRequest = new UpdateTokenRequest(1, '123');
         $tokenResponse = new GenerateTokenResponse('3213', new \DateTime());
         $this->tokenGenerator->method('getToken')->willReturn($tokenResponse);
         $result = $this->process->updateToken($updateTokenRequest);
 
         $this->assertEquals(true, $result->getTokenFound());
         $this->assertEquals(false, $result->getTokenExpired());
+        $this->assertEquals(false, $result->getTokenIncorrect());
         $this->assertEquals(true, $result->getUpdated());
         $this->assertEquals('3213', $result->getNewToken());
     }

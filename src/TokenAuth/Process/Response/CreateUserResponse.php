@@ -15,7 +15,7 @@ class CreateUserResponse
         $this->isEmailTaken = $emailTaken;
     }
 
-    public function isEmailTaken()
+    public function isEmailTaken(): bool
     {
         return $this->isEmailTaken;
     }

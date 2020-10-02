@@ -34,17 +34,20 @@ class UpdateUserToken
         $user = $this->userRepo->getUserById($request->getUserId());
         $token = $this->refreshTokenRepo->getRefreshTokenForUser($user);
         if (null === $token) {
-            return new UpdateTokenResponse(false, false, false);
+            return new UpdateTokenResponse(false, false, false, false);
         }
         $validToken = $this->tokenValidator->isValidToken($token->getToken());
         if (!$validToken) {
-            return new UpdateTokenResponse(false, true, true);
+            return new UpdateTokenResponse(false, true, true, false);
+        }
+        if ($request->getRefreshToken() !== $token->getToken()) {
+            return new UpdateTokenResponse(false, true, false, true);
         }
         $tokenRequest = new GenerateTokenRequest(
             $user->getEmailAddress(),
             []
         );
         $newToken = $this->tokenGenerator->getToken($tokenRequest);
-        return new UpdateTokenResponse(true, true, false, $newToken->getToken());
+        return new UpdateTokenResponse(true, true, false, false, $newToken->getToken());
     }
 }

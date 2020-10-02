@@ -29,6 +29,18 @@ class CreateUserTest extends TestCase
         );
     }
 
+    public function testExpectedResultIfEmailAlreadyTaken()
+    {
+        $obj_request = new CreateUserRequest('test@test.com', '123', 'Test Name');
+        $this->passwordHasher->method('hash')->willReturn('321');
+        $user = new User('test@test.com', '321', 'Test Name');
+        $user->setUserId(1);
+        $this->getUserRepo->method('getUserByEmail')->willReturn($user);
+        /** @var CreateUserResponse $obj_response */
+        $obj_response = $this->createUserProcess->create($obj_request);
+        $this->assertEquals(true, $obj_response->isEmailTaken());
+    }
+
     public function testUserCreated()
     {
         $obj_request = new CreateUserRequest('test@test.com', '123', 'Test Name');
