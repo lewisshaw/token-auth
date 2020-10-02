@@ -10,24 +10,31 @@ use TokenAuth\Process\Response\GenerateTokenResponse;
 use TokenAuth\Process\Token\GenerateTokenInterface;
 use TokenAuth\Process\User\LoginUser;
 use PHPUnit\Framework\TestCase;
+use TokenAuth\Data\Repository\RefreshToken\SaveRefreshTokenInterface;
 use TokenAuth\Process\Password\PasswordVerifierInterface;
 
 class LoginUserTest extends TestCase
 {
     private $getUserRepo;
     private $tokenGenerator;
+    private $refreshTokGenerator;
     private $passwordVerifier;
+    private $refreshTokenSaver;
     private $process;
 
     protected function setUp(): void
     {
         $this->getUserRepo = $this->createMock(GetUserInterface::class);
         $this->tokenGenerator = $this->createMock(GenerateTokenInterface::class);
+        $this->refreshTokGenerator = $this->createMock(GenerateTokenInterface::class);
+        $this->refreshTokenSaver = $this->createMock(SaveRefreshTokenInterface::class);
         $this->passwordVerifier = $this->createMock(PasswordVerifierInterface::class);
         $this->process = new LoginUser(
             $this->tokenGenerator,
+            $this->refreshTokGenerator,
             $this->getUserRepo,
-            $this->passwordVerifier
+            $this->passwordVerifier,
+            $this->refreshTokenSaver
         );
     }
 
@@ -56,6 +63,7 @@ class LoginUserTest extends TestCase
         $this->passwordVerifier->method('isPasswordCorrect')->willReturn(true);
         $tokenResponse = new GenerateTokenResponse('hg54', new \DateTime());
         $this->tokenGenerator->method('getToken')->willReturn($tokenResponse);
+        $this->refreshTokGenerator->method('getToken')->willReturn($tokenResponse);
         $loginRequest = new LoginUserRequest('test@test.com', '432');
         $obj_response = $this->process->login($loginRequest);
         $this->assertEquals(true, $obj_response->isLoginValid());

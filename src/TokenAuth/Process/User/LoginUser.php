@@ -2,6 +2,8 @@
 
 namespace TokenAuth\Process\User;
 
+use TokenAuth\Data\Entity\Token;
+use TokenAuth\Data\Repository\RefreshToken\SaveRefreshTokenInterface;
 use TokenAuth\Data\Repository\User\GetUserInterface;
 use TokenAuth\Process\Password\PasswordVerifierInterface;
 use TokenAuth\Process\Request\GenerateTokenRequest;
@@ -12,17 +14,23 @@ use TokenAuth\Process\Token\GenerateTokenInterface;
 class LoginUser
 {
     private GenerateTokenInterface $tokenGenerator;
+    private GenerateTokenInterface $refreshTokGenerator;
     private GetUserInterface $userRepo;
     private PasswordVerifierInterface $passwordVerifier;
+    private SaveRefreshTokenInterface $tokenSaver;
 
     public function __construct(
         GenerateTokenInterface $tokenGenerator,
+        GenerateTokenInterface $refreshTokGenerator,
         GetUserInterface $userRepo,
-        PasswordVerifierInterface $passwordVerifier
+        PasswordVerifierInterface $passwordVerifier,
+        SaveRefreshTokenInterface $tokenSaver
     ) {
         $this->tokenGenerator = $tokenGenerator;
+        $this->refreshTokGenerator = $refreshTokGenerator;
         $this->userRepo = $userRepo;
         $this->passwordVerifier = $passwordVerifier;
+        $this->tokenSaver = $tokenSaver;
     }
 
     public function login(LoginUserRequest $request): LoginUserResponse
@@ -44,6 +52,8 @@ class LoginUser
             $request->getEmail(),
             []
         );
+        $refreshToken = $this->refreshTokGenerator->getToken($tokenRequest);
+        $this->tokenSaver->saveRefreshToken($user, new Token($refreshToken->getToken()));
         $token = $this->tokenGenerator->getToken($tokenRequest);
         return new LoginUserResponse(true, $token->getToken());
     }
